@@ -37,12 +37,18 @@ function agregarMarcadorAlMapa(row) {
     var popupContent = '<b>Ruta:</b> ' + row['Ruta Nombre Corto'] + '<br>' +
                        '<b>Razón Social:</b> ' + row['Razon Social'] + '<br>' +
                        '<b>Nombre Dueño:</b> ' + row['Nombre dueño'] + '<br>' +
-                       '<b>Latitud:</b> ' + lat + '<br>' +
-                       '<b>Longitud:</b> ' + lng;
-
+                       '<b>Region</b> ' + row['Region'] + '<br>' +
+                       '<b>Teléfono:</b> ' + row['Teléfono'] + '<br>' +
+                       '<b>Departamento:</b> ' + row['Departamento'] + '<br>' +
+                       '<b>Municipio:</b> ' + row['Municipio'] 
+                       
     // Añadir más campos aquí si tu Excel tiene más columnas
-    
-    L.marker([lat, lng]).addTo(map)
+    try {
+        L.marker([lat, lng]).addTo(map)
         .bindPopup(popupContent);
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 
