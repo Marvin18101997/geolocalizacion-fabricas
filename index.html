@@ -1,30 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-    <title>Mapa de Sucursales en Guatemala</title>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Leaflet CSS -->
+    <title>Invitación Especial</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-
-    <style>
-        #map {
-            height: 100vh;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="map"></div>
 
-    <!-- Leaflet JS -->
+<body>
+    <div class="background">
+        <img src="Img/fondo.png" alt="Gato">
+    </div>
+    <div class="grid-container">
+        <div class="modal">
+            <div class="modal-content">
+                <p><strong>Participación de Mercado</strong></p>
+                <div id="map"></div>
+            </div>
+        </div>
+
+
+        <div class="modal">
+            <div class="modal-content">
+                <p><strong>Porcentaje de Representación</strong></p>
+                <div id="chartContainer">
+                    <canvas id="cementoChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
-
-    <!-- Tu script JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
-    <input type="file" id="input-excel" accept=".xlsx, .xls" onchange="leerExcel(event)">
-
+    <!-- Botón personalizado para cargar archivos -->
+    <div class="grid-container">
+        <div class="file-upload">
+            <button>Elegir archivo</button>
+            <input type="file" id="input-excel" accept=".xlsx, .xls" onchange="leerExcel(event)">
+        </div>
+        <div class="file-upload">
+            <button onclick="limpiar()">Limpiar</button>
+        </div>
+    </div>
 </body>
+
 </html>
