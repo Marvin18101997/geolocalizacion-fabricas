@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitación Especial</title>
+    <title>Mapa de Sucursales en Guatemala</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,6 +14,13 @@
     <div class="background">
         <img src="Img/fondo.png" alt="Gato">
     </div>
+    <div class="filter-buttons">
+        <button class="btn-green" onclick="toggleMarkers('Cempro')">Cempro</button>
+        <button class="btn-yellow" onclick="toggleMarkers('Importados')">Importados</button>
+        <button class="btn-red" onclick="toggleMarkers('Tolteca')">Tolteca</button>
+        <button class="btn-blue" onclick="toggleMarkers('Contrabando')">Contrabando</button>
+        <button class="btn-gray" onclick="toggleMarkers('Inactivo')">Inactivo</button>
+    </div>    
     <div class="grid-container">
         <div class="modal">
             <div class="modal-content">

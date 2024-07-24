@@ -6,8 +6,15 @@ var cementoCounts = {
     'Contrabando': 0,
     'Inactivo': 0
 };
+var markers = {
+    'Cempro': [],
+    'Importados': [],
+    'Tolteca': [],
+    'Contrabando': [],
+    'Inactivo': []
+};
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     map = L.map('map').setView([15.783471, -90.230759], 7);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -19,13 +26,13 @@ function leerExcel(event) {
     var input = event.target;
     var reader = new FileReader();
 
-    reader.onload = function() {
+    reader.onload = function () {
         var data = new Uint8Array(reader.result);
-        var workbook = XLSX.read(data, {type: 'array'});
+        var workbook = XLSX.read(data, { type: 'array' });
 
-        workbook.SheetNames.forEach(function(sheetName) {
+        workbook.SheetNames.forEach(function (sheetName) {
             var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-            XL_row_object.forEach(function(row){
+            XL_row_object.forEach(function (row) {
                 agregarMarcadorAlMapa(row);
                 contarCemento(row['Clasificacion']);
             });
@@ -41,50 +48,54 @@ function agregarMarcadorAlMapa(row) {
     var lat = row['Latitud'];
     var lng = row['Longitud'];
     var cemento = row['Clasificacion'];
-    var iconUrl;
+    var markerColor;
 
-    switch(cemento) {
+    switch (cemento) {
         case 'Cempro':
-            iconUrl = 'Img/Cempro.png';
+            markerColor = 'green';
             break;
         case 'Importados':
-            iconUrl = 'Img/Importados.png';
+            markerColor = 'yellow';
             break;
         case 'Tolteca':
-            iconUrl = 'Img/Tolteca.png';
+            markerColor = 'red';
             break;
         case 'Contrabando':
-            iconUrl = 'Img/contrabando.png';
+            markerColor = 'blue';
             break;
         case 'Inactivo':
-            iconUrl = 'Img/inactivo.png';
+            markerColor = 'gray';
             break;
         default:
-            iconUrl = 'Img/contrabando.png'; // Default icon
+            markerColor = 'black'; // Default color in case no match
     }
 
-    var markerIcon = L.icon({
-        iconUrl: iconUrl,
-        iconSize: [25, 41], // size of the icon
-        iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
-        popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
-        shadowSize: [41, 41] // size of the shadow
+    var markerIcon = L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="background-color:${markerColor}; width:20px; height:20px; border-radius:50%;"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
     });
 
     // Construir el contenido del Popup
     var popupContent = '<b>Razon Social</b> ' + row['R.S.'] + '<br>' +
-                       '<b>¿Es ConstruBlock?</b> ' + row['¿Es constru?'] + '<br>' +
-                       '<b>Cliente</b> ' + row['Cli'] + '<br>' +
-                       '<b>Ejecutivo</b> ' + row['Eje'] + '<br>' +
-                       '<b>Teléfono:</b> ' + row['Telefono'] + '<br>' +
-                       '<b>Cemento:</b> ' + cemento + '<br>';
+        '<b>¿Es ConstruBlock?</b> ' + row['¿Es constru?'] + '<br>' +
+        '<b>Cliente</b> ' + row['Cli'] + '<br>' +
+        '<b>Ejecutivo</b> ' + row['Eje'] + '<br>' +
+        '<b>Teléfono:</b> ' + row['Telefono'] + '<br>' +
+        '<b>Cemento:</b> ' + cemento + '<br>';
 
     try {
-        L.marker([lat, lng], { icon: markerIcon }).addTo(map)
-        .bindPopup(popupContent);
+        var marker = L.marker([lat, lng], { icon: markerIcon }).addTo(map)
+            .bindPopup(popupContent);
+
+        // Añadir el marcador al grupo correspondiente
+        markers[cemento].push(marker);
     } catch (error) {
-        console.log(error);
+        console.log('Error al leer la propiedad');
+
     }
+
 }
 
 function contarCemento(cemento) {
@@ -95,6 +106,8 @@ function contarCemento(cemento) {
 
 function generarGrafica() {
     var ctx = document.getElementById('cementoChart').getContext('2d');
+    var total = Object.values(cementoCounts).reduce((sum, value) => sum + value, 0);
+
     var data = {
         labels: Object.keys(cementoCounts),
         datasets: [{
@@ -114,8 +127,10 @@ function generarGrafica() {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(tooltipItem) {
-                            return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                        label: function (tooltipItem) {
+                            var value = tooltipItem.raw;
+                            var percentage = ((value / total) * 100).toFixed(2);
+                            return `${tooltipItem.label}: ${value} (${percentage}%)`;
                         }
                     }
                 }
@@ -124,6 +139,18 @@ function generarGrafica() {
     });
 }
 
-function limpiar(){
+function toggleMarkers(cemento) {
+    if (markers[cemento]) {
+        markers[cemento].forEach(marker => {
+            if (map.hasLayer(marker)) {
+                map.removeLayer(marker);
+            } else {
+                map.addLayer(marker);
+            }
+        });
+    }
+}
+
+function limpiar() {
     location.reload();
 }

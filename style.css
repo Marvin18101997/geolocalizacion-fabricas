@@ -1,229 +1,288 @@
  #map {
-    height: 50vh;
-    width: 600px;
-}
-#chartContainer {
-    height: 80%;
-    width: 100%;
-} 
-canvas {
-    width: 100% !important;
-    height: 100% !important;
-}
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+     height: 50vh;
+     width: 600px;
+ }
 
-body,
-html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Poppins', sans-serif;
-    flex-direction: column;
-    /* Allows stacking of modals vertically */
-}
+ #chartContainer {
+     height: 80%;
+     width: 100%;
+ }
 
-.background {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-}
+ canvas {
+     width: 100% !important;
+     height: 100% !important;
+ }
 
-.background img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-.modal-container {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    /* Ensure children modals are stretched equally */
-    width: 90%;
-    max-width: 1000px;
-    /* Optional: set a max width */
-    gap: 20px;
-    /* Space between the modals */
-    margin-bottom: 20px;
-}
+ body,
+ html {
+     margin: 0;
+     padding: 0;
+     width: 100%;
+     height: 100%;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-family: 'Poppins', sans-serif;
+     flex-direction: column;
+     /* Allows stacking of modals vertically */
+ }
 
-.modal {
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    flex: 1;
-    /* Allow modals to grow and take equal space */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+ .background {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     overflow: hidden;
+     z-index: -1;
+ }
 
-.modal-content {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    flex: 1;
-    /* Make sure the content also stretches */
-}
+ .background img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+ }
 
-.modal-content p {
-    font-size: 18px;
-    margin-bottom: 20px;
-    font-weight: 400;
-}
+ .modal-container {
+     display: flex;
+     justify-content: center;
+     align-items: stretch;
+     /* Ensure children modals are stretched equally */
+     width: 90%;
+     max-width: 1000px;
+     /* Optional: set a max width */
+     gap: 20px;
+     /* Space between the modals */
+     margin-bottom: 20px;
+ }
 
-.modal-content a {
-    display: inline-block;
-    margin-bottom: 20px;
-    font-size: 16px;
-    color: #007bff;
-    text-decoration: none;
-}
+ .modal {
+     background: rgba(0, 0, 0, 0.5);
+     border-radius: 10px;
+     padding: 20px;
+     text-align: center;
+     flex: 1;
+     /* Allow modals to grow and take equal space */
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+ }
 
-.modal-content a:hover {
-    text-decoration: underline;
-}
+ .modal-content {
+     background: rgba(255, 255, 255, 0.8);
+     padding: 20px;
+     border-radius: 10px;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     flex: 1;
+     /* Make sure the content also stretches */
+ }
 
+ .modal-content p {
+     font-size: 18px;
+     margin-bottom: 20px;
+     font-weight: 400;
+ }
 
-#adelanteButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    align-self: center;
-}
+ .modal-content a {
+     display: inline-block;
+     margin-bottom: 20px;
+     font-size: 16px;
+     color: #007bff;
+     text-decoration: none;
+ }
 
-#atrasButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    background-color: #a72828;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    align-self: center;
-}
-
-#adelanteButton:hover {
-    background-color: #218838;
-}
-
-#atrasButton:hover {
-    background-color: #f22929;
-    position: absolute;
-}
-
-.content {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.content h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-
-.content p {
-    font-size: 18px;
-    font-weight: 400;
-}
-
-/* Responsive Styles */
-@media (max-width: 600px) {
-    .modal-container {
-        flex-direction: column;
-        /* Stack modals vertically on smaller screens */
-    }
-
-    .modal {
-        padding: 10px;
-    }
-
-    .modal-content {
-        padding: 15px;
-    }
-
-    .modal-content p {
-        font-size: 16px;
-    }
-
-    #adelanteButton {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-
-    #atrasButton {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-
-    .content h1 {
-        font-size: 28px;
-    }
-
-    .content p {
-        font-size: 16px;
-    }
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 15px 40px;
-        padding: 20px;
-    }
-
-    .calendar-image {
-        width: 120px;
-    }
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px 40px;
-    padding: 20px;
-}
+ .modal-content a:hover {
+     text-decoration: underline;
+ }
 
 
-.file-upload {
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
-    margin: 10px;
-}
-.file-upload input[type="file"] {
-    position: absolute;
-    opacity: 0;
-    right: 0;
-    top: 0;
-    font-size: 100px;
-    cursor: pointer;
-}
-.file-upload button {
-    display: inline-block;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-}
-.file-upload button:hover {
-    background-color: #45a049;
-}
+ #adelanteButton {
+     padding: 10px 20px;
+     font-size: 16px;
+     border: none;
+     background-color: #28a745;
+     color: white;
+     border-radius: 5px;
+     cursor: pointer;
+     font-weight: 600;
+     align-self: center;
+ }
+
+ #atrasButton {
+     padding: 10px 20px;
+     font-size: 16px;
+     border: none;
+     background-color: #a72828;
+     color: white;
+     border-radius: 5px;
+     cursor: pointer;
+     font-weight: 600;
+     align-self: center;
+ }
+
+ #adelanteButton:hover {
+     background-color: #218838;
+ }
+
+ #atrasButton:hover {
+     background-color: #f22929;
+     position: absolute;
+ }
+
+ .content {
+     text-align: center;
+     margin-top: 50px;
+ }
+
+ .content h1 {
+     font-size: 36px;
+     margin-bottom: 20px;
+     font-weight: 600;
+ }
+
+ .content p {
+     font-size: 18px;
+     font-weight: 400;
+ }
+
+ /* Responsive Styles */
+ @media (max-width: 600px) {
+     .modal-container {
+         flex-direction: column;
+         /* Stack modals vertically on smaller screens */
+     }
+
+     .modal {
+         padding: 10px;
+     }
+
+     .modal-content {
+         padding: 15px;
+     }
+
+     .modal-content p {
+         font-size: 16px;
+     }
+
+     #adelanteButton {
+         padding: 8px 16px;
+         font-size: 14px;
+     }
+
+     #atrasButton {
+         padding: 8px 16px;
+         font-size: 14px;
+     }
+
+     .content h1 {
+         font-size: 28px;
+     }
+
+     .content p {
+         font-size: 16px;
+     }
+
+     .grid-container {
+         display: grid;
+         grid-template-columns: repeat(1, 1fr);
+         gap: 15px 40px;
+         padding: 20px;
+     }
+
+     .calendar-image {
+         width: 120px;
+     }
+ }
+
+ .grid-container {
+     display: grid;
+     grid-template-columns: repeat(2, 1fr);
+     gap: 20px 40px;
+     padding: 20px;
+ }
+
+
+ .file-upload {
+     display: inline-block;
+     position: relative;
+     overflow: hidden;
+     margin: 10px;
+ }
+
+ .file-upload input[type="file"] {
+     position: absolute;
+     opacity: 0;
+     right: 0;
+     top: 0;
+     font-size: 100px;
+     cursor: pointer;
+ }
+
+ .file-upload button {
+     
+     background-color: #4CAF50;
+     color: white;
+     display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ .file-upload button:hover {
+     background-color: #45a049;display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ .btn-green {
+     background-color: green;
+     display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ .btn-yellow {
+     background-color: yellow;
+     color: black;
+     display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ .btn-red {
+     background-color: red;
+     
+     display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ .btn-blue {
+     background-color: rgb(41, 41, 124);
+     color: white;
+     display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
+
+ .btn-gray {
+     background-color: gray;
+     display: inline-block;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 4px;
+ }
