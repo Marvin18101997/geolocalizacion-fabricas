@@ -5,54 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Sucursales en Guatemala</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="background">
-        <img src="Img/fondo.png" alt="Gato">
-    </div>
-    <div class="filter-buttons">
-        <button class="btn-green" onclick="toggleMarkers('Cempro')">Cempro</button>
-        <button class="btn-yellow" onclick="toggleMarkers('Importados')">Importados</button>
-        <button class="btn-red" onclick="toggleMarkers('Tolteca')">Tolteca</button>
-        <button class="btn-blue" onclick="toggleMarkers('Contrabando')">Contrabando</button>
-        <button class="btn-gray" onclick="toggleMarkers('Inactivo')">Inactivo</button>
-    </div>    
-    <div class="grid-container">
-        <div class="modal">
-            <div class="modal-content">
-                <p><strong>Participación de Mercado</strong></p>
-                <div id="map"></div>
+    <div class="background"></div>
+    <div class="content">
+        <div class="filter-buttons">
+            <button class="btn-green" onclick="toggleMarkers('Cempro')">Cempro</button>
+            <button class="btn-yellow" onclick="toggleMarkers('Importados')">Importados</button>
+            <button class="btn-red" onclick="toggleMarkers('Tolteca')">Tolteca</button>
+            <button class="btn-blue" onclick="toggleMarkers('Contrabando')">Contrabando</button>
+            <button class="btn-gray" onclick="toggleMarkers('Inactivo')">Inactivo</button>
+        </div>
+        <div class="grid-buttons">
+            <div class="file-upload">
+                <button>Elegir archivo</button>
+                <input type="file" id="input-excel" accept=".xlsx, .xls" onchange="leerExcel(event)">
+            </div>
+            <div class="file-upload">
+                <button onclick="limpiar()">Limpiar</button>
             </div>
         </div>
+        <div class="grid-container">
 
+            <div class="modal modal-large">
+                <div class="modal-content">
+                    <p><strong>Participación de Mercado</strong></p>
+                    <div id="map"></div>
+                </div>
+            </div>
 
-        <div class="modal">
-            <div class="modal-content">
-                <p><strong>Porcentaje de Representación</strong></p>
-                <div id="chartContainer">
-                    <canvas id="cementoChart"></canvas>
+            <div class="modal modal-centered no-shadow">
+                <div class="modal-content">
+                    <p><strong>Porcentaje de Representación</strong></p>
+                    <div id="chartContainer">
+                        <canvas id="cementoChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
-    <!-- Botón personalizado para cargar archivos -->
-    <div class="grid-container">
-        <div class="file-upload">
-            <button>Elegir archivo</button>
-            <input type="file" id="input-excel" accept=".xlsx, .xls" onchange="leerExcel(event)">
-        </div>
-        <div class="file-upload">
-            <button onclick="limpiar()">Limpiar</button>
-        </div>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="script.js"></script>
+
+
     </div>
 </body>
 
