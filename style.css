@@ -1,25 +1,33 @@
 #map {
-    height: 70vh;  /* Aumentar el alto del mapa */
-    width: 100%;  /* Aumentar el ancho del mapa */
+    height: 70vh;
+    /* Aumentar el alto del mapa */
+    width: 100%;
+    /* Aumentar el ancho del mapa */
 }
 
 .modal-large {
-    flex: 2; /* Hacer que el modal del mapa ocupe más espacio en el contenedor de la cuadrícula */
+    flex: 2;
+    /* Hacer que el modal del mapa ocupe más espacio en el contenedor de la cuadrícula */
 }
 
 .modal-centered {
     display: flex;
-    justify-content: center; /* Centrar el contenido horizontalmente */
-    align-items: center; /* Centrar el contenido verticalmente */
+    justify-content: center;
+    /* Centrar el contenido horizontalmente */
+    align-items: center;
+    /* Centrar el contenido verticalmente */
 }
 
 #chartContainer {
-    height: 90%;  /* Mantener el alto del contenedor de la gráfica */
-    width: 100%;  /* Ajustar el ancho del contenedor de la gráfica */
+    height: 90%;
+    /* Mantener el alto del contenedor de la gráfica */
+    width: 100%;
+    /* Ajustar el ancho del contenedor de la gráfica */
 }
 
 .no-shadow {
-    box-shadow: none; /* Eliminar la sombra del segundo modal */
+    box-shadow: none;
+    /* Eliminar la sombra del segundo modal */
 }
 
 canvas {
@@ -29,12 +37,54 @@ canvas {
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: radial-gradient(circle farthest-side at 0% 50%,
+            #282828 23.5%,
+            rgba(255, 170, 0, 0) 0) 21px 30px,
+        radial-gradient(circle farthest-side at 0% 50%,
+            #2c3539 24%,
+            rgba(240, 166, 17, 0) 0) 19px 30px,
+        linear-gradient(#282828 14%,
+            rgba(240, 166, 17, 0) 0,
+            rgba(240, 166, 17, 0) 85%,
+            #282828 0) 0 0,
+        linear-gradient(150deg,
+            #282828 24%,
+            #2c3539 0,
+            #2c3539 26%,
+            rgba(240, 166, 17, 0) 0,
+            rgba(240, 166, 17, 0) 74%,
+            #2c3539 0,
+            #2c3539 76%,
+            #282828 0) 0 0,
+        linear-gradient(30deg,
+            #282828 24%,
+            #2c3539 0,
+            #2c3539 26%,
+            rgba(240, 166, 17, 0) 0,
+            rgba(240, 166, 17, 0) 74%,
+            #2c3539 0,
+            #2c3539 76%,
+            #282828 0) 0 0,
+        linear-gradient(90deg, #2c3539 2%, #282828 0, #282828 98%, #2c3539 0%) 0 0 #282828;
+    background-size: 40px 60px;
+    background-repeat: repeat;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh; /* Permite que crezca con el contenido */
+    height: auto;
+    padding: 20px; /* Añade un poco de padding para evitar problemas visuales */
 }
 
 .background {
@@ -44,10 +94,13 @@ body, html {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background-image: url('Img/fondo.png'); /* Asegúrate de que esta sea la ruta correcta de tu imagen */
+    background-image: url('Img/fondo.png');
+    /* Asegúrate de que esta sea la ruta correcta de tu imagen */
     background-size: cover;
     background-position: center;
 }
+
+
 
 .content {
     width: 100%;
@@ -300,3 +353,324 @@ body, html {
     cursor: pointer;
     border-radius: 4px;
 }
+
+
+/* Estilos para el modal de la gráfica */
+.tab-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2px;
+    border-radius: 9px;
+  }
+  
+  .scroller {
+    content: "";
+    width: 15px;
+    height: calc(26.5px * 8.6 + 1px + 10px);
+    opacity: 0.4;
+    background: #888;
+    position: absolute;
+    top: 5px;
+    right: -17px;
+    border: 0.5px solid rgb(245, 239, 239);
+    border-radius: 7px;
+  }
+  
+  .indicator {
+    content: "";
+    width: 10px;
+    height: 28px;
+    background: #ffa500;
+    position: absolute;
+    top: 8px;
+    right: -15px;
+    z-index: 9;
+    border: 0.5px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 7px;
+    transition: all 0.2s ease-out;
+  }
+  
+  .tab {
+    width: 130px;
+    height: 28px;
+    position: absolute;
+    z-index: 99;
+    outline: none;
+    opacity: 0;
+  }
+  
+  .tab_label {
+    width: 200px;
+    height: 50px;
+    position: relative;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #ffa500;
+  }
+  
+  .tab--1:checked ~ .indicator {
+    top: 8px;
+  }
+  
+  .tab--2:checked ~ .indicator {
+    top: calc(28px * 2 + 2px);
+  }
+  
+  .tab--3:checked ~ .indicator {
+    top: calc(26.5px * 4 + 1px);
+  }
+
+  .tab--4:checked ~ .indicator {
+    top: calc(26.5px * 6 + 1px);
+  }
+
+  .tab--5:checked ~ .indicator {
+    top: calc(26.5px * 8 + 1px);
+  }
+  
+
+
+
+/* Estilos para el modal de la gráfica */
+
+        /* ==================== Estilos de los Checkboxes ==================== */
+        .checkbox-container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .ios-checkbox {
+            --checkbox-size: 28px;
+            --checkbox-color: #3b82f6;
+            --checkbox-bg: #dbeafe;
+            --checkbox-border: #93c5fd;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .ios-checkbox input {
+            display: none;
+        }
+
+        .checkbox-wrapper {
+            position: relative;
+            width: var(--checkbox-size);
+            height: var(--checkbox-size);
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .checkbox-bg {
+            position: absolute;
+            inset: 0;
+            border-radius: 8px;
+            border: 2px solid var(--checkbox-border);
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-icon {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 80%;
+            height: 80%;
+            color: white;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .check-path {
+            stroke-dasharray: 40;
+            stroke-dashoffset: 40;
+            transition: stroke-dashoffset 0.3s ease 0.1s;
+        }
+
+        /* Estado checked */
+        .ios-checkbox input:checked+.checkbox-wrapper .checkbox-bg {
+            background: var(--checkbox-color);
+            border-color: var(--checkbox-color);
+        }
+
+        .ios-checkbox input:checked+.checkbox-wrapper .checkbox-icon {
+            transform: scale(1);
+        }
+
+        .ios-checkbox input:checked+.checkbox-wrapper .check-path {
+            stroke-dashoffset: 0;
+        }
+
+        /* Hover y active */
+        .ios-checkbox:hover .checkbox-wrapper {
+            transform: scale(1.05);
+        }
+
+        .ios-checkbox:active .checkbox-wrapper {
+            transform: scale(0.95);
+        }
+
+        /* Focus */
+        .ios-checkbox input:focus+.checkbox-wrapper .checkbox-bg {
+            box-shadow: 0 0 0 4px var(--checkbox-bg);
+        }
+
+        /* Temas de color */
+        .ios-checkbox.blue {
+            --checkbox-color: #3b82f6;
+            --checkbox-bg: #dbeafe;
+            --checkbox-border: #93c5fd;
+        }
+
+        .ios-checkbox.green {
+            --checkbox-color: #10b981;
+            --checkbox-bg: #d1fae5;
+            --checkbox-border: #6ee7b7;
+        }
+
+        .ios-checkbox.purple {
+            --checkbox-color: #8b5cf6;
+            --checkbox-bg: #ede9fe;
+            --checkbox-border: #c4b5fd;
+        }
+
+        .ios-checkbox.red {
+            --checkbox-color: #ef4444;
+            --checkbox-bg: #fee2e2;
+            --checkbox-border: #fca5a5;
+        }
+
+        .ios-checkbox.yellow {
+            --checkbox-color: #facc15;
+            --checkbox-bg: #fef9c3;
+            --checkbox-border: #fde047;
+        }
+
+        .ios-checkbox.gray {
+            --checkbox-color: gray;
+            --checkbox-bg: #e5e5e5;
+            --checkbox-border: #a5a5a5;
+        }
+
+        .ios-checkbox.black {
+            --checkbox-color: black;
+            --checkbox-bg: #e5e5e5;
+            --checkbox-border: #a5a5a5;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .ios-checkbox input:checked+.checkbox-wrapper {
+            animation: bounce 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==================== Estilos de los Botones de Archivo ==================== */
+        .grid-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .file-upload {
+            position: relative;
+        }
+
+        .file-upload button {
+            padding: 10px 20px;
+            border: none;
+            background: #3b82f6;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* ==================== Estilos del Accordion ==================== */
+        .accordion-container {
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        .accordion-panel {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: background 0.3s ease;
+        }
+
+        /* Efecto difuminado cuando el panel se abre */
+        .accordion-panel[open] {
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        details>summary {
+            list-style: none;
+        }
+
+        .accordion-header {
+            cursor: pointer;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f0f0f0;
+        }
+
+        .accordion-header:hover {
+            background: #e0e0e0;
+        }
+
+        .accordion-header .panel-title {
+            font-weight: bold;
+        }
+
+        .accordion-header .panel-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .accordion-content {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.8);
+        }

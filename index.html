@@ -2,57 +2,162 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Sucursales en Guatemala</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Sucursales y Ventas por Municipio</title>
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Puedes seguir utilizando tu hoja de estilos adicional -->
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <div class="background"></div>
-    <div class="content">
-        <div class="filter-buttons">
-            <button class="btn-green" onclick="toggleMarkers('Cempro')">Cempro</button>
-            <button class="btn-yellow" onclick="toggleMarkers('Importados')">Importados</button>
-            <button class="btn-red" onclick="toggleMarkers('Tolteca')">Tolteca</button>
-            <button class="btn-blue" onclick="toggleMarkers('Contrabando')">Contrabando</button>
-            <button class="btn-gray" onclick="toggleMarkers('Inactivo')">Inactivo</button>
-        </div>
-        <div class="grid-buttons">
-            <div class="file-upload">
-                <button>Elegir archivo</button>
-                <input type="file" id="input-excel" accept=".xlsx, .xls" onchange="leerExcel(event)">
+    <div class="container">
+        <div class="content">
+            <!-- ==================== Controles de Filtro y Carga de Marcadores ==================== -->
+            <div class="checkbox-container">
+                <!-- Cada checkbox controla la visibilidad de los marcadores en el mapa -->
+                <label class="ios-checkbox green">
+                    <input type="checkbox" id="chkCempro" onchange="handleCheckboxChange(this, 'Cempro')" checked>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-bg"></div>
+                        <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor"
+                                d="M4 12L10 18L20 6" class="check-path"></path>
+                        </svg>
+                    </div>
+                    <span>Cempro</span>
+                </label>
+                <label class="ios-checkbox yellow">
+                    <input type="checkbox" id="chkImportados" onchange="handleCheckboxChange(this, 'Importados')"
+                        checked>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-bg"></div>
+                        <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor"
+                                d="M4 12L10 18L20 6" class="check-path"></path>
+                        </svg>
+                    </div>
+                    <span>Importados</span>
+                </label>
+                <label class="ios-checkbox red">
+                    <input type="checkbox" id="chkTolteca" onchange="handleCheckboxChange(this, 'Tolteca')" checked>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-bg"></div>
+                        <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor"
+                                d="M4 12L10 18L20 6" class="check-path"></path>
+                        </svg>
+                    </div>
+                    <span>Tolteca</span>
+                </label>
+                <label class="ios-checkbox blue">
+                    <input type="checkbox" id="chkContrabando" onchange="handleCheckboxChange(this, 'Contrabando')"
+                        checked>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-bg"></div>
+                        <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor"
+                                d="M4 12L10 18L20 6" class="check-path"></path>
+                        </svg>
+                    </div>
+                    <span>Contrabando</span>
+                </label>
+                <label class="ios-checkbox gray">
+                    <input type="checkbox" id="chkInactivo" onchange="handleCheckboxChange(this, 'Inactivo')" checked>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-bg"></div>
+                        <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor"
+                                d="M4 12L10 18L20 6" class="check-path"></path>
+                        </svg>
+                    </div>
+                    <span>Inactivo</span>
+                </label>
+                <label class="ios-checkbox black">
+                    <input type="checkbox" id="chkCerrado" onchange="handleCheckboxChange(this, 'Cerrado')" checked>
+                    <div class="checkbox-wrapper">
+                        <div class="checkbox-bg"></div>
+                        <svg fill="none" viewBox="0 0 24 24" class="checkbox-icon">
+                            <path stroke-linejoin="round" stroke-linecap="round" stroke-width="3" stroke="currentColor"
+                                d="M4 12L10 18L20 6" class="check-path"></path>
+                        </svg>
+                    </div>
+                    <span>Cerrado</span>
+                </label>
             </div>
-            <div class="file-upload">
-                <button onclick="limpiar()">Limpiar</button>
-            </div>
-        </div>
-        <div class="grid-container">
 
-            <div class="modal modal-large">
-                <div class="modal-content">
-                    <p><strong>Participación de Mercado</strong></p>
-                    <div id="map"></div>
+            <div class="grid-buttons">
+                <!-- Botones para cargar y limpiar el Excel de marcadores -->
+                <div class="file-upload">
+                    <button>Elegir archivo</button>
+                    <input type="file" id="input-excel" accept=".xlsx, .xls" onchange="leerExcel(event)">
+                </div>
+                <div class="file-upload">
+                    <button onclick="limpiar()">Limpiar</button>
                 </div>
             </div>
 
-            <div class="modal modal-centered no-shadow">
-                <div class="modal-content">
-                    <p><strong>Porcentaje de Representación</strong></p>
-                    <div id="chartContainer">
+            <!-- ==================== Accordion con 3 Secciones ==================== -->
+            <div class="accordion-container">
+                <!-- Panel 1: Mapa -->
+                <details class="accordion-panel" open>
+                    <summary class="accordion-header">
+                        <span class="panel-title">Sección del Mapa</span>
+                        <span class="panel-description">Visualización del mapa interactivo</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <!-- Aquí se mostrará el mapa (Leaflet) -->
+                        <div id="map" style="height: 400px;"></div>
+                    </div>
+                </details>
+
+                <!-- Panel 2: Gráfica de Pastel (Participación de Mercado) -->
+                <details class="accordion-panel">
+                    <summary class="accordion-header">
+                        <span class="panel-title">Sección de la Gráfica</span>
+                        <span class="panel-description">Visualización de la participación de mercado</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <!-- Canvas para la gráfica de pastel -->
                         <canvas id="cementoChart"></canvas>
                     </div>
-                </div>
+                </details>
+
+                <!-- Panel 3: Gráfica de Barras (Ventas por Municipio) -->
+                <details class="accordion-panel">
+                    <summary class="accordion-header">
+                        <span class="panel-title">Ventas por Municipio</span>
+                        <span class="panel-description">Gráfica de barras de toneladas vendidas</span>
+                    </summary>
+                    <div class="accordion-content">
+                        <!-- Controles para cargar el Excel pivot -->
+                        <div class="grid-buttons">
+                            <div class="file-upload">
+                                <button>Cargar Pivot</button>
+                                <input type="file" id="input-excel-pivot" accept=".xlsx, .xls"
+                                    onchange="leerExcelPivot(event)">
+                            </div>
+                            <div class="file-upload">
+                                <button onclick="limpiarPivot()">Limpiar Pivot</button>
+                            </div>
+                        </div>
+                        <!-- Canvas para la gráfica de barras -->
+                        <canvas id="barChartPivot"></canvas>
+                    </div>
+                </details>
             </div>
+
+            <!-- ==================== Scripts ==================== -->
+            <!-- Librería Leaflet -->
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+            <!-- Librería SheetJS para leer Excel -->
+            <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+            <!-- Librería Chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="script.js"></script>
         </div>
-
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-        <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="script.js"></script>
-
-
     </div>
 </body>
 
