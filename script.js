@@ -173,7 +173,7 @@ function limpiar() {
   location.reload();
 }
 
-/************** Sección para el Excel Pivot y Gráfica de Barras **************/
+/************** Sección para Gráfica de Barras (Excel Pivot – Municipios) **************/
 var barChartPivot; // Variable global para almacenar la gráfica de barras
 
 function leerExcelPivot(event) {
@@ -183,25 +183,23 @@ function leerExcelPivot(event) {
     try {
       var data = new Uint8Array(reader.result);
       var workbook = XLSX.read(data, { type: 'array' });
-      var sheetName = "Municipios"; // Usamos el nombre "Municipios"
+      var sheetName = "Municipios"; // Usamos la hoja "Municipios"
       if (!workbook.Sheets[sheetName]) {
         alert("La hoja 'Municipios' no se encontró en el archivo.");
         return;
       }
       // Convertimos la hoja en un arreglo de objetos
       var rows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-      console.log("Filas leídas del Excel Pivot:", rows);
+      console.log("Filas leídas del Excel Pivot (Municipios):", rows);
 
       var labels = [];   // Etiqueta para cada barra: Municipio (porcentaje)
-      var values = [];   // Valor numérico (porcentaje * 100)
-      var colors = [];   // Azul para municipios, rojo para total del departamento
-      // Recorremos cada fila (ignorando la cabecera)
+      var values = [];   // Valor numérico (porcentaje * 10)
+      var colors = [];   // Se asigna azul a todos (ya que solo trabajamos con Municipios)
       rows.forEach(function (row) {
-        // Omitir filas cuya columna "__EMPTY" tenga "Ejecutivo" o "Municipio"
+        // Omitir la cabecera (se supone que la cabecera tiene "__EMPTY" igual a "Ejecutivo" o "Municipio")
         if (row["__EMPTY"] === "Ejecutivo" || row["__EMPTY"] === "Municipio") {
           return;
         }
-        // Se asume que el nombre del Municipio está en la columna "__EMPTY"
         var municipio = row["__EMPTY"].toString().trim();
         // Se asume que el porcentaje está en la columna "__EMPTY_14"
         var percStr = row["__EMPTY_14"].toString().replace("%", "").trim();
@@ -210,28 +208,20 @@ function leerExcelPivot(event) {
         if (isNaN(perc)) {
           perc = 0;
         }
-        // Multiplicamos por 100 para que la gráfica se ubique en el rango 0-100
+        // Multiplicamos por 10 para que la gráfica se ubique en el rango 0–10
         var percValue = perc * 100;
-        console.log("Municipio:", municipio, "Porcentaje:", percValue);
-        // Armamos la etiqueta: por ejemplo, "Villa Nueva (0,06%)"
-               var label = municipio + " (" + percValue.toFixed(2).toString().trim() + "%)";
+        console.log("Municipio:", municipio, "Porcentaje escalado (x10):", percValue);
+        var label = municipio + " (" + percValue.toFixed(2) + "%)";
         labels.push(label);
         values.push(percValue);
-        // Si el Municipio coincide con el valor en "Departamento" (si este existe y no es vacío)
-        // se considera total del Departamento y se pinta de rojo; de lo contrario, azul.
-        var depto = (row["Departamento"] || "").toString().trim();
-        if (municipio.toLowerCase() === depto.toLowerCase() && depto !== "") {
-          colors.push("red");
-        } else {
-          colors.push("blue");
-        }
+        colors.push("blue");
       });
       console.log("Etiquetas:", labels);
       console.log("Valores:", values);
       console.log("Colores:", colors);
       generarBarChartPivot(labels, values, colors);
     } catch (err) {
-      console.error("Error leyendo el archivo Excel Pivot:", err);
+      console.error("Error leyendo el archivo Excel Pivot (Municipios):", err);
     }
   };
   reader.readAsArrayBuffer(input.files[0]);
@@ -251,8 +241,8 @@ function generarBarChartPivot(labels, values, colors) {
           label: 'Porcentaje (%)',
           data: values,
           backgroundColor: colors,
-          borderColor: colors.map(function (color) {
-            return color === "blue" ? "rgba(54, 162, 235, 1)" : "rgba(255, 0, 0, 1)";
+          borderColor: colors.map(function () {
+            return "rgba(54, 162, 235, 1)";
           }),
           borderWidth: 1
         }]
@@ -262,32 +252,21 @@ function generarBarChartPivot(labels, values, colors) {
         scales: {
           y: {
             beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Porcentaje (%)'
-            },
-            max: 100
+            max: 10,
+            title: { display: true, text: 'Porcentaje (%)' }
           },
           x: {
-            title: {
-              display: true,
-              text: 'Municipio (o Departamento) y %'
-            }
+            title: { display: true, text: 'Municipios y %' }
           }
         },
         plugins: {
-          legend: {
-            display: false
-          },
-          title: {
-            display: true,
-            text: 'Ventas por Municipio'
-          }
+          legend: { display: false },
+          title: { display: true, text: 'Ventas por Municipio' }
         }
       }
     });
   } catch (err) {
-    console.error("Error generando la gráfica de barras pivot:", err);
+    console.error("Error generando la gráfica de barras pivot (Municipios):", err);
   }
 }
 
